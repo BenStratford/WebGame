@@ -11,6 +11,10 @@
 	$Money = mysql_query("select money from userinfo where id=".$_SESSION["cuserid"],$con);
 	$Money=mysql_fetch_array($Money);
 	$Money=$Money["money"];
+
+  $curActivity = mysql_query("select currentActivity from userinfo where id=".$_SESSION["cuserid"],$con);
+  $curActivity = mysql_fetch_array($curActivity);
+  $curActivity=$curActivity["currentActivity"];
 ?>
 
 <!DOCTYPE html>
@@ -25,36 +29,23 @@
 
     <title>Ben Stratford's Web Game</title>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
-    <!-- Custom CSS -->
-    <style>
- 
-    body {
-        /*padding-top: 70px;
-        /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
-    }
-    </style>
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
 
 </head>
 
 <body>
-	
+  <div class = "background" id = "centrebg"></div>
+	<div class = "background" id = "leftbg"></div>
+  <div class = "background" id = "rightbg"></div>
     <!-- Navigation -->
 
-  <nav class="navbar navbar-default">
+  <nav class="navbar navbar-default" style ="margin-bottom:0px;border-radius:0px">
     <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
+      <div class="navbar-header" style="margin-left:220px;">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
@@ -93,28 +84,71 @@
     </div><!-- /.container-fluid -->
   </nav>
     <!-- Page Content -->
-  <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Analytics</a></li>
-            <li><a href="#">Export</a></li>
 
-            <li><a href="">Nav item</a></li>
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-            <li><a href="">More navigation</a></li>
-
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-          </ul>
-        </div>
-      </div>
+  <div class="sidebar">
+    <div id="locationsHeader"><strong>LOCATIONS</strong></div>
+    <input type="button" class="button" onclick="displayActivities('Supermarket')"; value="Supermarket">
+    <input type="button" class="button" onclick="displayActivities('Hardware Store')"; value="Hardware Store">
+    <input type="button" class="button" onclick="displayActivities('Electronics Store')"; value="Electronics Store">
+    <input type="button" class="button" onclick="displayActivities('Town Hall')"; value="Town Hall">
+    <input type="button" class="button" onclick="displayActivities('Training')"; value="Training">
+    <input type="button" class="button" onclick="displayActivities('Docks')"; value="Docks">
+    <input type="button" class="button" onclick="displayActivities('Casino')"; value="Casino">
+    <input type="button" class="button" onclick="displayActivities('Phone Booth')"; value="Phone Booth">
+    <input type="button" class="button" onclick="displayActivities('Bank')"; value="Bank">
   </div>
+
+  <div class="sidebar" id="right" style="float: right;">
+    <div id="currentActivity">
+      <strong>Current Activity:<br></strong>
+      <?= $curActivity ?>
+    </div>
+    <div id="activities">
+    </div>
+  </div>
+  <iframe id="iframe" src="#"></iframe>
+  <script>
+    function displayActivities(str){
+      switch(str){
+        case "Supermarket":
+        document.getElementById("activities").innerHTML = 
+        "Supermarket<input type='button' class='button' onclick= \x22document.getElementById('iframe').src='Supermarket.php'\x22 value='Buy'><input type='button' class='button' value='Sell'><input type='button' class='button' value='Shoplift'>";
+        break;
+        case "Hardware Store":
+        document.getElementById("activities").innerHTML = 
+        "<input type='button' class='button' value='Buy'><input type='button' class='button' value='Sell'><input type='button' class='button' value='Shoplift'>";
+        break;
+        case "Electronics Store":
+        document.getElementById("activities").innerHTML = 
+        "<input type='button' class='button' value='Buy'><input type='button' class='button' value='Sell'><input type='button' class='button' value='Shoplift'>";
+        break;
+        case "Town Hall":
+        document.getElementById("activities").innerHTML = 
+        "<input type='button' class='button' value='Player List'><input type='button' class='button' value='Change Name'>";
+        break;
+        case "Training":
+        document.getElementById("activities").innerHTML = 
+        "<input type='button' class='button' value='Gym'><input type='button' class='button' value='Firing Range'><input type='button' class='button' value='Internet Cafe'>";
+        break;
+        case "Docks":
+        document.getElementById("activities").innerHTML = 
+        "<input type='button' class='button' value='Black Market'><input type='button' class='button' value='Smuggle'>";
+        break;
+        case "Casino":
+        document.getElementById("activities").innerHTML = 
+        "<input type='button' class='button' value='Slots'><input type='button' class='button' value='Yahtzee'>";
+        break;
+        case "Phone Booth":
+        document.getElementById("activities").innerHTML = 
+        "<input type='button' class='button' value='Hire Hitman'><input type='button' class='button' value='Assassination Jobs'>";
+        break;
+        case "Bank":
+        document.getElementById("activities").innerHTML = 
+        "<input type='button' class='button' value='Plan Heist'>";
+        break;
+      }
+    }
+  </script>
 
     <!-- jQuery Version 1.11.1 -->
     <script src="js/jquery.js"></script>

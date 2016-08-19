@@ -1,0 +1,73 @@
+.background{
+  height:100%;
+}
+#centrebg{
+  width:100%;
+  background-color:#444444;
+  position:absolute;
+  z-index: -2;
+}
+#leftbg{
+  width:220px;
+  background-color:#BBBBBB;
+  display:inline-block;
+  position:absolute;
+  z-index: -1;
+}
+#rightbg{
+  width:220px;
+  background-color:#BBBBBB;
+  display:inline-block;
+  position:absolute;
+  right:0;
+  z-index: -1;
+}
+.nav > li > a {
+  color:black;
+}
+#currentActivity{
+  height:100px;
+  background-color: white;
+  width:220px;
+  border: 2px solid white;
+  text-align:center;
+}
+#locationsHeader{
+  height: 50px;
+  width: 220px;
+  display: block;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
+}
+.sidebar{
+  display:inline-block;
+  height: auto;
+  width:220px;
+}
+.button {
+  background-color: #666666;
+  border: none;
+  color: white;
+  width:220px;
+  height:40px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition: all 0.3s ease 0s;
+}
+.button:hover {
+  background: #3071A9
+}
+#iframe{
+  position: absolute;
+  width:calc(100% - 440px);
+  height:calc(100% - 52px);
+  border:none;
+}
+html, body { 
+  margin:0; 
+  padding:0; 
+  height:100%; 
+}
