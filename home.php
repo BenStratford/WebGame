@@ -8,13 +8,13 @@
 	$Username=mysql_fetch_array($Username);
 	$Username=$Username["username"];
 
-	$Money = mysql_query("select money from userinfo where id=".$_SESSION["cuserid"],$con);
-	$Money=mysql_fetch_array($Money);
-	$Money=$Money["money"];
-
-  $curActivity = mysql_query("select currentActivity from userinfo where id=".$_SESSION["cuserid"],$con);
-  $curActivity = mysql_fetch_array($curActivity);
-  $curActivity=$curActivity["currentActivity"];
+	$userInfo = mysql_query("select * from userinfo where userId=".$_SESSION["cuserid"],$con);
+	$userInfo=mysql_fetch_array($userInfo);
+	$Money=$userInfo["money"];
+  $curActivity=$userInfo["currentActivity"];
+  $health=$userInfo["health"];
+  $endurance=$userInfo["endurance"];
+  $maxHealth=100+(10*$endurance);
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +33,6 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
-
 </head>
 
 <body>
@@ -52,13 +51,13 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#"><?= $Username ?></a>
+        <a class="navbar-brand" href="player.php" target="iframe"><?= $Username ?></a>
       </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li><a href="#">Link</a></li>
+          <li><a href="#">Gangs</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -73,6 +72,14 @@
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
+        <li>
+          <div class="progress" id = 'healthBar' style="width:150px;margin-top: 15px; margin-bottom: 0px; margin-right: 80px;">
+            <div id = 'healthinfo'>Health:<?=$health . "/" . $maxHealth?></div>
+            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow=<?=$health?> aria-valuemin="0" aria-valuemax=<?=$maxHealth?> style="<?='width:' . ($health / $maxHealth) * 100 . '%' ?>;">
+            
+            </div>
+          </div>
+          </li>
       	  <li><a href="#"><?php 
       		  setlocale(LC_MONETARY, 'en_US'); 
       		  echo money_format ( '$%i' , $Money ); ?>
@@ -96,6 +103,7 @@
     <input type="button" class="button" onclick="displayActivities('Casino')"; value="Casino">
     <input type="button" class="button" onclick="displayActivities('Phone Booth')"; value="Phone Booth">
     <input type="button" class="button" onclick="displayActivities('Bank')"; value="Bank">
+    <input type="button" class="button" onclick="displayActivities('Hospital')"; value="Hospital">
   </div>
 
   <div class="sidebar" id="right" style="float: right;">
@@ -106,21 +114,21 @@
     <div id="activities">
     </div>
   </div>
-  <iframe id="iframe" src="#"></iframe>
+  <iframe name = "iframe" id="iframe" src="#"></iframe>
   <script>
     function displayActivities(str){
       switch(str){
         case "Supermarket":
         document.getElementById("activities").innerHTML = 
-        "Supermarket<input type='button' class='button' onclick= \x22document.getElementById('iframe').src='Supermarket.php'\x22 value='Buy'><input type='button' class='button' value='Sell'><input type='button' class='button' value='Shoplift'>";
+        "Supermarket<input type='button' class='button' onclick= \x22document.getElementById('iframe').src='shop.php?shop=Supermarket&buy=yes'\x22 value='Buy'><input type='button' class='button' onclick= \x22document.getElementById('iframe').src='shop.php?shop=Supermarket&buy=no'\x22 value='Sell'><input type='button' class='button' value='Shoplift'>";
         break;
         case "Hardware Store":
         document.getElementById("activities").innerHTML = 
-        "<input type='button' class='button' value='Buy'><input type='button' class='button' value='Sell'><input type='button' class='button' value='Shoplift'>";
+        "<input type='button' class='button' onclick= \x22document.getElementById('iframe').src='shop.php?shop=Hardware&buy=yes'\x22 value='Buy'><input type='button' class='button' onclick= \x22document.getElementById('iframe').src='shop.php?shop=Hardware&buy=no'\x22 value='Sell'><input type='button' class='button' value='Shoplift'>";
         break;
         case "Electronics Store":
         document.getElementById("activities").innerHTML = 
-        "<input type='button' class='button' value='Buy'><input type='button' class='button' value='Sell'><input type='button' class='button' value='Shoplift'>";
+        "<input type='button' class='button' onclick= \x22document.getElementById('iframe').src='shop.php?shop=Electronics&buy=yes'\x22 value='Buy'><input type='button' class='button' onclick= \x22document.getElementById('iframe').src='shop.php?shop=Electronics&buy=no'\x22 value='Sell'><input type='button' class='button' value='Shoplift'>";
         break;
         case "Town Hall":
         document.getElementById("activities").innerHTML = 
@@ -145,6 +153,10 @@
         case "Bank":
         document.getElementById("activities").innerHTML = 
         "<input type='button' class='button' value='Plan Heist'>";
+        break;
+        case "Hospital":
+        document.getElementById("activities").innerHTML = 
+        "<input type='button' class='button' value='Recover'>";
         break;
       }
     }

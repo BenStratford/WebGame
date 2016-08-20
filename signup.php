@@ -140,7 +140,8 @@ if($_POST["sbutton"] !=NULL)
   $result = mysql_num_rows($result) + 1;
   mysql_query("insert into login values(" . $result . ",'".$username."', aes_encrypt('".$password."','6p1ar3R^w|q6JD{qirL6i5}1O7hq4}'))",$con)or die('Error: ' . mysql_error());
 
-  mysql_query("insert into userinfo(id) values(" . $result . ")",$con)or die('Error: ' . mysql_error());
+  mysql_query("insert into userinfo(userId, curWeapon) values(" . $result . ", 'fists')",$con)or die('Error: ' . mysql_error());
+  mysql_query("insert into userWeapons values(" . $result . ", 26, 1)",$con)or die('Error: ' . mysql_error());
 
   header('Location: index.php');
  }
